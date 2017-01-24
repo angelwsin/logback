@@ -1,0 +1,74 @@
+
+
+configuration/variable   PropertyAction()
+configuration/property   PropertyAction()
+
+configuration/substitutionProperty   PropertyAction()
+
+configuration/timestamp   TimestampAction()
+configuration/shutdownHook   ShutdownHookAction()
+configuration/define   DefinePropertyAction()
+
+configuration/contextProperty   ContextPropertyAction()
+
+configuration/conversionRule   ConversionRuleAction()
+
+configuration/statusListener   StatusListenerAction()
+
+configuration/appender   AppenderAction<E>()
+configuration/appender/appender-ref   AppenderRefAction<E>()
+configuration/newRule   NewRuleAction()
+*/param   ParamAction(getBeanDescriptionCache())
+
+configuration   ConfigurationAction()
+
+configuration/contextName   ContextNameAction()
+configuration/contextListener   LoggerContextListenerAction()
+configuration/insertFromJNDI   InsertFromJNDIAction()
+configuration/evaluator   EvaluatorAction()
+
+configuration/appender/sift   SiftAction()
+configuration/appender/sift/*   NOPAction()
+
+configuration/logger   LoggerAction()
+configuration/logger/level   LevelAction()
+
+configuration/root   RootLoggerAction()
+configuration/root/level   LevelAction()
+configuration/logger/appender-ref   AppenderRefAction<ILoggingEvent>()
+configuration/root/appender-ref   AppenderRefAction<ILoggingEvent>()
+
+*/if   IfAction()
+*/if/then   ThenAction()
+*/if/then/*   NOPAction()
+*/if/else   ElseAction()
+*/if/else/*   NOPAction()
+configuration/jmxConfigurator   JMXConfiguratorAction()
+
+configuration/include   IncludeAction()
+
+configuration/consolePlugin   ConsolePluginAction()
+
+configuration/receiver   ReceiverAction()
+
+没有在上面配置的组件解析
+registry.add(AppenderBase.class, "layout", PatternLayout.class);
+registry.add(UnsynchronizedAppenderBase.class, "layout", PatternLayout.class);
+
+registry.add(AppenderBase.class, "encoder", PatternLayoutEncoder.class);
+registry.add(UnsynchronizedAppenderBase.class, "encoder", PatternLayoutEncoder.class);
+
+registry.add(EvaluatorFilter.class, "evaluator", JaninoEventEvaluator.class);
+
+registry.add(SSLComponent.class, "ssl", SSLConfiguration.class);
+registry.add(SSLConfiguration.class, "parameters", SSLParametersConfiguration.class);
+registry.add(SSLConfiguration.class, "keyStore", KeyStoreFactoryBean.class);
+registry.add(SSLConfiguration.class, "trustStore", KeyStoreFactoryBean.class);
+registry.add(SSLConfiguration.class, "keyManagerFactory", KeyManagerFactoryFactoryBean.class);
+registry.add(SSLConfiguration.class, "trustManagerFactory", TrustManagerFactoryFactoryBean.class);
+registry.add(SSLConfiguration.class, "secureRandom", SecureRandomFactoryBean.class);
+
+查找顺序
+1.根据 标签中配置的类和setter方法的后缀 从registry中查找 如果没有查找到则 类的父类
+2.如果还没有则根据属性值进行查找到方法上的注解DefaultClass
+3.如果还没有则根据方法的参数类型查找
